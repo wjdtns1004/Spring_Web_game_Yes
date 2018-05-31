@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mybatis-config.xml의 alias를 사용 -->
+<mapper namespace="userMapper">
+	
+	<!-- id와 password가 일치하면 count가 1 그렇지 않으면 0 -->
+	<select id="selectLogin_user_info" parameterType="userInfoVo" resultType="hashmap">
+		select count(*),nickname 
+		from tb_user_info
+		where "id"       = #{id} 
+		  and "password" = #{password} 
+		  GROUP BY nickname
+	</select>
+	<select id="selectALL_user_info" resultType="userInfoVo">
+		select * from
+		tb_user_info
+	</select>
+	<select id="selectOne_user_info" parameterType="int" resultType="userInfoVo">
+		select *
+		from tb_user_info
+		where "userno" = #{userno}
+	</select>
+	<select id="checkUserOverlap_byID" parameterType="java.lang.String" resultType="userInfoEntity">
+		select *
+		from tb_user_info
+		where "id" = #{id}
+	</select>
+	<select id="checkUserOverlap_byNICKNAME" parameterType="java.lang.String" resultType="userInfoEntity">
+		select *
+		from tb_user_info
+		where "nickname" = #{nickname}
+	</select>
+	<insert id="insert_user_info" parameterType="userInfoVo">
+		insert into
+		tb_user_info
+		values(
+		nextval('sq_userno')
+		,#{username}
+		,#{id}
+		,#{password}
+		,#{nickname}
+		,#{indino}
+		,#{guildno}
+		,now()
+		)
+	</insert>
+	<update id="update_user_info" parameterType="userInfoVo">
+		update tb_user_info
+		set    username = #{username}
+		      ,id       = #{id}
+		      ,passward = #{passward}
+		      ,nickname = #{nickname}
+		      ,indino   = #{indino}
+		      ,guildno  = #{guildno}
+		     ,signdate  = #{signdate}
+		where "userno"  = #{userno}
+	</update>
+
+	
+</mapper>
+

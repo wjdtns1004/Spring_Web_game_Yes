@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 환경설정 -->
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<typeAliases>
+
+		<!-- 사용자 정보 -->
+		<typeAlias alias="userInfoVo"            type="yes.vo.user.UserInfoVo" />			         <!-- 사용자정보        -->
+		<typeAlias alias="industryTypeVo"        type="yes.vo.user.IndustryTypeVo"/>	             <!-- 산업 타입          -->
+		<typeAlias alias="industryInfoVo"        type="yes.vo.user.IndustryInfoVo"/>	             <!-- 산업 정보          -->
+		<typeAlias alias="guildInfoVo"           type="yes.vo.user.GuildInfoVo"/>			         <!-- 길드(그룹)정보 -->
+                                                                                                     
+		<typeAlias alias="userInfoEntity"        type="yes.entity.user.UserInfoEntity"/>             <!-- 사용자정보        -->   
+		<typeAlias alias="industryTypeEntity"    type="yes.entity.user.IndustryTypeEntity"/>         <!-- 산업 타입          -->		                                        
+		<typeAlias alias="industryInfoEntity"    type="yes.entity.user.IndustryInfoEntity"/>         <!-- 산업 정보          -->   
+		<typeAlias alias="guildInfoEntity"       type="yes.entity.user.GuildInfoEntity"/>            <!-- 길드(그룹)정보 -->
+		                                                                                             
+		<!-- 개시판 정보 -->                                                                              
+		<typeAlias alias="boardVo"               type="yes.vo.board.BoardVo"/>				         <!-- 게시판              -->
+		<typeAlias alias="boardReplyVo"          type="yes.vo.board.BoardReplyVo"/>			         <!-- 댓글                 -->
+		                                                                                             
+		<typeAlias alias="boardEntity"           type="yes.entity.board.BoardEntity"/>	             <!-- 게시판              -->
+		<typeAlias alias="boardEntityList"       type="yes.entity.board.BoardEntityList"/> 	         <!-- 게시판 리스트    -->
+		<typeAlias alias="boardEntitySearchList" type="yes.vo.board.BoardSearchVO"/> 	             <!-- 게시판 search-->
+		<typeAlias alias="boardReplyEntity"      type="yes.entity.board.BoardReplyEntity"/>          
+		
+		<!-- 게임-생산관리 정보 -->
+		<typeAlias alias="phistoryVo"        type="yes.vo.production.PhistoryVo"/>			 <!--개발 히스토리        -->
+		<typeAlias alias="productionTypeVo"      type="yes.vo.production.ProductionTypeVo"/>		 <!--생산 타입              -->
+		<typeAlias alias="productionDevVo"      type="yes.vo.production.ProductionDevVo"/>		 <!--생산 타입              -->
+		<typeAlias alias="conversionInsertVo"      type="yes.vo.production.ConversionInsertVo"/>		 <!--생산 타입              -->
+		                                                                                             
+		<typeAlias alias="phistoryEntity"       type="yes.entity.production.PhistoryEntity"/>	    <!--개발 히스토리        -->
+		<typeAlias alias="productionTypeEntity" type="yes.entity.production.ProductionTypeEntity"/> <!--생산 타입              -->
+		<typeAlias alias="productionSummary"    type="yes.entity.production.ProductionSummary"/>	<!--사용자 자원 요약        -->
+		<typeAlias alias="productionDevEntity"  type="yes.entity.production.ProductionDevEntity"/>  <!--생산 타입              -->
+		<typeAlias alias="conversionResEntity"  type="yes.entity.production.ConversionResEntity"/>  <!--생산 타입              -->
+		<typeAlias alias="productionRank"       type="yes.entity.production.ProductionRank"/>       <!--생산 랭크 조회       -->
+		<typeAlias alias="productionFinalWork"  type="yes.entity.production.ProductionFinalWork"/>  <!--생산 랭크 조회       -->
+		<typeAlias alias="productionUserRank"   type="yes.entity.production.ProductionUserRank"/>   <!--생산 랭크 조회       -->
+		
+		
+		 
+		
+	</typeAliases>
+
+
+	<!-- SQL문장이 기술되는 Mapper파일 -->
+	<mappers>
+		<!-- 사용자 정보 -->
+ 		<mapper resource="mapping/user-mapping.xml" />
+ 		<!-- 산업    타입 -->
+		<mapper resource="mapping/indi-mapping.xml" />
+		<!-- 개시판 정보 -->
+		<mapper resource="mapping/board-mapping.xml"/>
+		<!-- 개시판  댓글 -->
+		<mapper resource="mapping/board-reply-mapping.xml"/>
+		<!-- 게임  -->
+		<mapper resource="mapping/gproduction-mapping.xml"/>
+		
+	</mappers>
+	
+</configuration>

@@ -1,0 +1,300 @@
+@charset "utf-8";
+@import url(http://fonts.googleapis.com/css?family=Orbitron);
+
+/*    Reset CSS  */
+* { margin:0;  padding:0;}
+ol,ul { list-style: none; }
+body {
+	width:100%;
+	min-width: 1400px;
+	height:4000px;
+	background:#111;
+	font-family:Orbitron; }
+a { outline:0;
+	text-decoration:none;
+	color:#bbb;}
+img {border:0;}
+
+.wrap {
+	position:fixed;
+	width:100%;
+	height:100%;
+	min-width:1024px;
+	min-height:768px;
+	perspective:900px;}
+
+/* 메뉴 호출 버튼 */
+.btnMenu {
+	position:fixed;
+	top:50px;
+	left:40px;
+	display:inline-block;
+	width:20px;
+	height:70px;
+	text-align:center;
+	font-size:30px;
+	color:#fff;
+	z-index:3;
+	animation:ani 0.7s infinite  alternate;}
+@keyframes ani {
+	0% {
+		transform:scale(1);
+		opacity:1;
+		color:#fff;}
+	100% {
+		transform:scale(1.5);
+		opacity:0.8;
+		color:#888;}
+}
+
+/*상단 메뉴바 이미지나 색*/
+h1 {
+	background-color: #777;
+	font-size: 40px;
+	height: 90px;
+}
+/*로고*/
+h1 img {
+	margin-left: 0px;
+	width: 136px;
+	height: 50px;
+}
+
+/*Community*/
+#Comm {
+	position:absolute;
+	top:10px;
+	right:57px;}
+#Comm:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+#Comm li {
+	float: left;
+	width: auto;
+}
+#Comm a {
+  display:block;
+  padding:8px 30px;
+  font-size:13px;
+  font-weight:bold;
+  color:#fff;
+  text-align:center;
+  line-height:1.8;
+  transition:all .5s;}
+#Comm a i {
+	font-size: 25px;
+	margin-right:13px;
+	color: #fff;
+}
+
+/*user정보*/
+#GameMenu {
+	position:absolute;
+	top:50px;
+	right:57px;}
+#GameMenu:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+#GameMenu li {
+	float: left;
+	width: auto;
+}
+#GameMenu a {
+  display:block;
+  padding:8px 30px;
+  font-size:13px;
+  font-weight:bold;
+  color:#fff;
+  text-align:center;
+  line-height:1.8;
+  transition:all .5s;}
+#GameMenu a i {
+	font-size: 25px;
+	margin-right:13px;
+	color: #fff;
+}
+
+/* 게임메뉴 전체 묶음 */
+nav {
+	position:fixed;
+	width:150px;
+	height:100%;
+	background:#eee;
+	z-index:2;
+	transform:rotateY(120deg);
+	transform-origin:left center;
+	opacity:0;
+	z-index:2;
+	transition:all 0.8s;}
+nav.on {
+	transform:rotateY(15deg);
+	opacity:1;}
+
+/* 게임 메뉴 */
+nav ul {
+	position:absolute;
+	top:20%;
+	left:0px;
+	width:100%;}
+nav li a {
+	display:block;
+	width:100%;
+	box-sizing:border-box;
+	font-size:18px;
+	line-height:4;
+	color:#000;
+	text-align:center;
+	transition:all 0.5s;}
+nav li a:hover {
+	color:#fff;
+	background:#000;}
+
+/* 로고 */
+/*nav h1 { width:100px; position:absolute; top:80px; left:50%; margin-left:-50px;}
+nav h1 img { width:100%; height:auto; }*/
+
+
+
+
+/*하위메뉴 부분 시작*/
+	/*왼쪽 큰 제목 */
+/*	.txt { position:fixed;
+		top:50%;
+		right:20px;
+		margin-top:-80px;
+		font-size:100px;
+		color:#fff;
+		text-align:right;
+		line-height:0.5;}
+	.txt span { color:#aaa;}
+	.txt em { font-family:arial;
+		font-size:18px;
+		font-style:normal;
+		color:#888;
+		letter-spacing:1px; } */
+
+
+		section {
+			position:fixed;
+			width:100%;
+			height:100%;
+			left: 0px;
+			background:#555;
+			z-index:1;
+			transform-origin:right center;
+			transition: all 0.5s;
+			overflow-y: scroll;
+			}
+			
+			
+			/*게임 메뉴 클릭 시 게임 화면 움직이게*/
+			section.on { transform:rotateY(-10deg);
+
+			}
+	/*레이아웃 >> 섹션 레이아웃은 위에 게임이랑 똑같이가기*/
+	/*section {
+		position:fixed;
+		top:50%;
+		left:0px;
+		margin-top:-250px;
+		width:4600px;
+		height:500px; } */
+	article {
+		position:relative;
+		top:40%;
+		width:550px;
+		height:400px;
+		margin:50px;
+		margin-top:-200px;
+		box-sizing:border-box;
+		float:left;
+		background:#fff;
+		border-radius:5px;
+		box-shadow:3px 3px 3px #bbb;
+		overflow:hidden;
+		transition:all 0.7s; }
+	/*메뉴 제목*/
+	article h2 {
+		position:absolute;
+		top:300px;
+		right:0px;
+		width:100%;
+		height:50px;
+		box-sizing:border-box;
+		padding-left:20px;
+		background:#111;
+		opacity:0.4;
+		z-index:2;
+		cursor:pointer;
+		transition:all 0.5s; }
+	article:hover h2 { opacity:0.8;}
+	article h2 a {
+		font-size:14px;
+		font-weight:bold;
+		line-height:3.5;
+		color:#fff;
+		letter-spacing:2px;
+		transition:all 0.5s;}
+	/*메뉴 썸네일*/
+	article strong {
+		display:block;
+		position:absolute;
+		left:0px;
+		top:0px;
+		width:100%;
+		height:300px;
+		opacity:0.4;
+		overflow:hidden;
+		text-align:center;
+		transition:all 0.5s; }
+	article:hover strong { opacity:1; }
+	article strong img {height:300px; width:auto;}
+	/*메뉴 이미지*/
+	article p {
+		position:absolute;
+		top:50%;
+		right:0%;
+		z-index:1;
+		margin-top:0px;
+		width:100%;
+		height:0px;
+		text-align:center;
+		overflow:hidden;
+		background-color:#fff;
+		opacity:0;
+		transition:all 0.8s; }
+	article p img { width:auto; height:100%; }
+	/*메뉴 설명 >> 없애려면 없애도 됨*/
+	article em {
+		position:absolute;
+		bottom:50px;
+		right:-300px;
+		z-index:2;
+		display:inline-block;
+		box-sizing:border-box;
+		padding:10px 20px;
+		background:#000;
+		color:#fff;
+		opacity:0.8;
+		transition:all 1s;}
+	/*닫기(X)버튼*/
+	section span {
+		position:absolute;
+		top:110px;
+		right:-300px;
+		z-index:3;
+		font-size:20px;
+		color:#fff;
+		cursor:pointer;}
+	/*클릭하면 바뀌는 모양*/
+	article.on { width:1000px; height:500px; margin-top:-250px; }
+	article.on h2 { top:100px; height:100px; background:#111; opacity:0.3;}
+	article.on h2 a { font-size:30px; color:#fff; }
+	article.on strong { opacity:0;}
+	article.on p { height:500px; margin-top:-250px; opacity:1;}
+	article.on em { right:20px; }
+	article.on span { right:20px;}

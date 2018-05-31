@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mybatis-config.xml의 alias를 사용 -->
+<mapper namespace="boardReplyMapper">
+
+<!-- 게시판 댓글 리스트-->
+	<select id="selectList_boardReply" parameterType="boardReplyVo" resultType="boardReplyEntity">
+		  select b.brdno   
+               , b.reno
+               , b.userno
+               , a.nickname
+               , b.rememo      
+               , b.reorder
+               , b.lastdate
+          from   tb_boardreply b, tb_user_info a
+          where "redeleteflag"='N'
+          and   "brdno"=#{brdno}
+          and   a.userno = b.userno
+	</select>
+	
+	
+	<!-- 댓글 입력 -->
+	<insert id="insert_boardReply" parameterType="boardReplyEntity">
+		insert into tb_boardreply(
+			  brdno 
+			, reno 
+			, userno 
+			, rememo 
+			, reorder 
+			, redate
+			, redeleteflag
+			, lastdate)
+		values (
+			  #{brdno} 
+			, nextval('sq_reno')
+			, #{userno}
+			, #{rememo}
+			, (select count(*)+1 
+			   from   tb_boardreply 
+			   where "brdno" = #{brdno}
+			   )
+			, now() 
+			, 'N'
+			, now())
+	</insert>
+	
+	<!-- 댓글 삭제  -->
+	<delete id="delete_boardReply" parameterType="boardReplyEntity">
+		delete from tb_boardreply
+		where "reno"=#{reno}
+        and   "userno"=#{userno}
+	</delete>
+
+</mapper>
+

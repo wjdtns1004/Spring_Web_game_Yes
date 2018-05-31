@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mybatis-config.xml의 alias를 사용 -->
+<mapper namespace="boardMapper">
+	
+	<!-- 게시판 목록 조회  10 개씩 -->
+	<select id="selectList_board" parameterType="int" resultType="boardEntityList">
+		  select a.brdno     as brdno   
+               , a.brdtitle  as brdtitle
+               , a.bgno  as bgno
+               , b.userno    as userno		      
+               , b.username  as username
+               , b.nickname  as nickname
+               , a.brddate   as brddate 
+               , a.brdhit    as brdhit  
+          from   tb_board a
+               , tb_user_info b
+          where  a.deleteflag ='N'
+            and  a.userno     = b.userno
+          order  by a.brdno desc
+          limit 10 offset #{rownum}<!-- 여기가 지워진것까지 나오는것 같어 -->
+	</select>
+	
+	<!-- 검색어를 통한 리스트 조회 -->
+	<select id="selectListbySearch_board" parameterType="boardEntitySearchList" resultType="boardEntityList">
+		  select a.brdno     as brdno   
+               , a.brdtitle  as brdtitle
+               , a.bgno      as bgno
+               , b.userno    as userno		      
+               , b.username  as username
+               , a.brddate   as brddate 
+               , a.brdhit    as brdhit  
+          from   tb_board a  
+               , tb_user_info b
+          where  a.deleteflag ='N'
+            and  a.userno     = b.userno
+            <if test="brdtitle != null" >
+            or  a.brdtitle = any
+            	<foreach collection="searchTypeArr" item="type" open="(" close=")" separator=",">
+            		#{type.value}
+            	</foreach>   
+            </if>
+            <if test="brdmemo != null" >
+            or  a.brdmemo = any
+            	<foreach collection="searchTypeArr" item="type" open="(" close=")" separator=",">
+            		#{type.value}
+            	</foreach>   
+            </if>
+          order  by a.brdno desc
+          limit 10 offset #{0}
+	</select>
+	
+	<!-- 등록 게시 글 수 조회  -->
+	<select id="countPageAll_board" resultType="int">
+		select count(*) as countpageall from tb_board where  deleteflag ='N' 
+	</select>
+
+	
+	<!-- 조회수 증가  -->
+    <update id="updateBoardRead" parameterType="int">
+          update tb_board
+          set    "brdhit" = "brdhit" + 1 
+          where  "brdno"  = #{brdno}
+    </update>
+
+<!-- 글 내용 CRUD  시작 -->
+    <!-- 글 읽기 -->
+	<select id="select_boardOne" parameterType="int" resultType="boardEntityList">
+		  select b.userno    as userno		      
+               , b.username  as username
+               , b.nickname  as nickname
+               , a.brdtitle  as brdtitle
+               , a.brdmemo   as brdmemo
+               , a.brdno     as brdno
+		  from   tb_board a
+               , tb_user_info b
+          where a.brdno = #{brdno}
+            and a.bgno  = #{bgno}
+            and b.userno  = #{userno}
+	</select>
+	
+    <!-- 게시글 입력 --> 
+    <insert id="insert_boardOne" parameterType="boardEntity" >
+		insert into tb_board(brdno              , bgno    , brdtitle    , userno  , brdmemo   , noticeflag     )
+        values              (nextval('sq_brdno'), #{bgno} , #{brdtitle} ,#{userno}, #{brdmemo}, #{noticeflag}  )
+	</insert>
+	
+	<!-- 게시글 정보 수정 -->
+	<update id="update_boardOne" parameterType="boardEntity">
+          update tb_board
+          set    "brdtitle" = #{brdtitle} 
+               , "brdmemo"  = #{brdmemo}
+               , "lastdate" = now()
+          where  "brdno"  = #{brdno}
+    </update>
+
+    <!--  게시글 삭제 deleteflag 를 y 로 변경  -->
+    <delete id="delete_boardOne" parameterType="int">
+            update tb_board
+            set    "deleteflag" ='Y' 
+            where  "brdno"      =#{brdno}
+    </delete>
+    
+<!-- 글 내용 CRUD  종료 -->
+
+</mapper>
+

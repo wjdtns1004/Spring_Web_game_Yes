@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mybatis-config.xml의 alias를 사용 -->
+<mapper namespace="gproductionMapper">
+	<select id="select_user_summary" parameterType="int" resultType="productionSummary">
+		select a.userno as userno                             
+             , calc_product_amount(a.userno,1) as  inmoney
+             , calc_product_amount(a.userno,2) as  inproduce
+             , calc_product_amount(a.userno,3) as  inrealestate 
+             , calc_product_amount(a.userno,4) as  inworker
+             , calc_product_active(a.userno,1) as  outmoney
+             , calc_product_active(a.userno,2) as  outproduce
+             , calc_product_active(a.userno,3) as  outrealestate
+             , calc_product_active(a.userno,4) as  outworker
+             , c.indtname as job
+             , calc_user_level(a.userno) as level
+        from tb_user_info a
+ 		   , tb_industry_info b
+           , tb_industry_type c
+        where a.userno = #{userno}
+          and a.indino = b.indino
+          and b.indtno = c.indtno
+	</select>
+	   
+
+	<select id="select_user_finalstat" parameterType="int" resultType="productionTypeEntity">
+		  select * 
+        from tbg_production_type
+        where (protype,protlevel) in (select b.protype
+                                          ,  max(b.protlevel)
+                                      from   tbg_phistory a
+                                          ,  tbg_production_type b
+                                      where  a.userno = #{userno}
+                                        and  a.protno = b.protno
+                                        and  <![CDATA[a.endtime < now()]]>
+                                      group by b.protype  
+                                      )
+	</select>
+	
+	<select id="select_user_Devstat" parameterType="int" resultType="productionDevEntity">
+		select b.*
+             , (EXTRACT(EPOCH FROM NOW() - COALESCE(c.endtime,now()))/60)::Integer as remainsec  <!-- 음수일때는 개발중이며 남은시간을 초로 보여줌 -->
+             , calc_reqamount(#{userno},B.protno) as status <!-- 자원부족 or 개발가능 -->
+        from (select b.protype
+                  ,  max(b.protlevel) as protlevel 
+              from   tbg_phistory a
+                  ,  tbg_production_type b
+              where  a.userno = #{userno}
+                and  <![CDATA[a.endtime < now()]]>
+                and  a.protno = b.protno
+              group by b.protype
+             )a 
+           , tbg_production_type b
+             left join
+             tbg_phistory c
+             on b.protno = c.protno
+        where (a.protype,a.protlevel+1) = (b.protype,b.protlevel);
+	</select>
+
+
+	<select id="resource_dev_activities"  parameterType="productionDevVo" resultType="int">
+		select resource_dev_activities(#{userno}, #{protno})
+	</select>
+	
+	<!-- 2018-01-13 수진아 여기부터 맵핑이야-->
+	<!-- 사용자의 번호를 입력해서 전환이 가능한 자원 양을 확인하는 루틴 --><!-- 완 reqtime integer 타입이 아니래요 -->
+	<select id="select_conversion_res" parameterType="int" resultType="conversionResEntity">
+		select a.userno 
+		     , calc_product_amount(a.userno,2) - calc_product_active(a.userno,2) as trueproduce 
+		     , calc_product_amount(a.userno,3) - calc_product_active(a.userno,3) as truerealestate
+		     , calc_product_amount(a.userno,4) - calc_product_active(a.userno,4) as trueworker
+		     , '' as conversionyn
+		     , to_timestamp(c.convtime)-'1970-01-01 00:00:00+00'  as conreqtime 
+			 , c.convproduce
+		     , c.convrealestate
+		     , c.conworker
+		     , b.*
+		from  tbg_phistory a
+		    , tbg_production_type b
+		    , tbg_conversion_rate c
+		where a.userno = #{userno}
+		  and <![CDATA[a.endtime < now()]]>
+		  and a.protno = b.protno
+		  and b.protype='영업'
+		  and a.protno = c.protno
+		order by b.protlevel
+	</select>
+	
+	<!-- 사용자번호, 자원종류, 자원량(입력받기) , 개발 코드를 넣어서 개발등록을 하는 루틴 -->
+	<select id="resource_dev_insert" parameterType="conversionInsertVo" resultType="int">
+		select resource_dev_insert(#{userno}, #{resourcetype},#{resourceamt},#{protno})
+	</select>
+	
+	
+	<!-- 게임 아이탬을 조회하는 루틴 --><!-- 완 -->
+	<select id="select_item_list" resultType="productionTypeEntity">
+		select * 
+		from   tbg_production_type 
+		where  <![CDATA[protlevel> 90]]>  
+		order by protype
+	</select>
+	
+	<!-- 게임 아이탬을 선택하고 결과를 확인하는 루틴 Y N 으로 결과 출력 --><!-- 완 -->
+	<select id="insert_item_byprotno" parameterType="productionTypeEntity" resultType="String">
+		select insert_item_byprotno(#{userno},#{protno})
+	</select>
+	
+	
+	<!-- 완 //소팅 시켜야해 -->
+	<select id="select_production_rank" resultType="productionRank">
+        select userno
+                , username
+                , id
+                , '' as password
+                , nickname
+                , indino
+                , guildno
+                , signdate                     
+                , calc_product_amount(userno,1)-calc_product_active(userno,1)  as  money
+                , calc_product_amount(userno,2)-calc_product_active(userno,2)  as  produce
+                , calc_product_amount(userno,3)-calc_product_active(userno,3)  as  realestate 
+                , calc_product_amount(userno,4)- calc_product_active(userno,4) as  worker
+                , calc_user_level(userno) as level
+        from   tb_user_info 
+        order by userno
+	</select>
+	
+	<!-- 최종 완료된 개발 현황 -->
+	<select id="select_user_finalwork" parameterType="int" resultType="productionFinalWork">
+		select now()- b.endtime as worktime
+             , '연구' as typegbn
+             , a.* 
+        from   tbg_production_type a
+             , tbg_phistory b
+        where a.protno = b.protno   
+          and b.userno = #{userno}
+          and <![CDATA[b.endtime < now()]]> 
+        union all 
+        select now()- b.endconversiontime
+             , '자원전환' as typegbn
+             , a.*
+        from   tbg_production_type a
+             , tbg_conversion_history b
+        where a.protno = b.protno   
+          and b.userno = #{userno}
+          and <![CDATA[b.endconversiontime < now()]]> 
+        union all 
+        select now()- b.cmdtime
+             , '아이탬 구매' as typegbn
+             , a.*
+        from   tbg_production_type a
+             , tbg_production_active b
+        where a.protno = b.protno   
+          and b.userno = #{userno}       
+          and <![CDATA[b.cmdtime < now()]]> 
+        order by 1
+        limit 5
+	</select>
+
+
+	<!-- 사용자의 랭킹조회 -->
+	<select id="select_user_rank" parameterType="int" resultType="productionUserRank">
+	select a.*
+      from (select *
+                 , rank() OVER(order by calc_product_amount(userno,1)-calc_product_active(userno,1) ) as moneyrank
+                 , rank() OVER(order by calc_product_amount(userno,2)-calc_product_active(userno,2) ) as producerank
+                 , rank() OVER(order by calc_product_amount(userno,3)-calc_product_active(userno,3) ) as realestaterank
+                 , rank() OVER(order by calc_product_amount(userno,4)-calc_product_active(userno,4) ) as workerrank
+                 , rank() OVER(order by calc_product_amount(userno,1)-calc_product_active(userno,1)
+                                      , calc_product_amount(userno,2)-calc_product_active(userno,2)
+                                      , calc_product_amount(userno,3)-calc_product_active(userno,3)
+                                      , calc_product_amount(userno,4)-calc_product_active(userno,4)) as totalrank
+            from tb_user_info 
+            )a
+      where a.userno = #{userno} 
+	
+	</select>
+	
+	
+
+	
+</mapper>
+

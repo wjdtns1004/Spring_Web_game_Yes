@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mybatis-config.xml의 alias를 사용 -->
+<mapper namespace="indiMapper">
+
+	<!-- 게임시작시 시작되는  처음 산업군의 리스트를 보여주는 SQL --> 
+	<select id="selectL1_industry_info" parameterType="industryInfoVo" resultType="industryInfoEntity">
+		select * from
+		"tb_industry_info" WHERE  "level"=1
+	</select>
+
+</mapper>
+

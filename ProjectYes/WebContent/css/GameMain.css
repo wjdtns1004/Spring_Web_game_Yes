@@ -1,0 +1,180 @@
+@charset "utf-8";
+@import url(http://fonts.googleapis.com/css?family=Orbitron);
+
+/*  Reset CSS  */
+* { margin:0;  padding:0;}
+ol,ul { list-style: none; }
+a { outline:0; text-decoration:none; color:#555; }
+img { border:0;}
+body {font-family:orbitron; }
+
+/*전체 프레임 안씀
+#wrap {
+	position:fixed;
+	top:0px; left:0px;
+	width:100%; height:100%;
+	min-width:1400px; min-height:780px;
+	background-image:url(../img/parallax-industrial-anim_x2_0.gif);
+background-size:cover;
+	transition:all 2s;}*/
+
+/*배경 이미지*/
+.back {
+	position:fixed;
+	width:100%; height:100%;
+	top:0px; left:0px;
+  background:url(../game_img/parallax-industrial-anim_x2_0.gif) no-repeat center top;
+  background-size:cover;}
+
+/*로고 >> 안씀 */
+/*#wrap h1 {
+	position:fixed;
+	width:90px; height:80px;
+	top:30px; left:60px;
+	background-image:url(../img/안넣음 위에그냥배경따로설정해줌);
+	background-size:contain;
+	background-repeat:no-repeat; }*/
+
+/*위쪽 주 메뉴*/
+#topmenu { /*topmenu id선택자를 이용해서 id가 topmenu인 것의 css 속성을 지정*/
+  top:50px;
+  right:250px;
+  position:fixed;
+  z-index:2;
+}
+#topmenu ul{              /*메인 메뉴 안의 ul을 설정함: 상위메뉴의 ul+하위 메뉴의 ul*/
+  list-style-type:none;  /*메인 메뉴 안의 ul 내부의 목록 표시를 없애줌*/
+  margin:0px;            /*메인 메뉴 안의  ul의 margin을 없앰 */
+  padding:0px;           /*메인 메뉴 안의 ul의 padding을 없앰*/
+}
+#topmenu .topmenuli {   /*메인 메뉴 안에 ul 태그 안에 li 태그의 스타일 적용(상위/하위메뉴 모두)*/
+  list-style:none;    /*기존의 가지고있는 list-style을 제거*/
+  float:left;        /*왼쪽 정렬*/
+  line-height:30px;  /*텍스트 한 줄의 높이를 30px로 설정*/
+  margin:10px;
+  vertical-align:middle;  /*세로 정렬을 가운데로 설정*/
+  text-align:center;  /*텍스트를 가운데로 정렬*/
+  position:relative;
+}
+.menulink, .submenulink{
+  text-decoration: none;
+  display:block;
+
+}
+#topmenu .menulink { /*id가 topmenu인 태그 안에 menulink 클래스 태그들의 스타일 설정*/
+  text-decoration:none; /* 링크(<a>태그)가 가지는 기본 꾸밈효과(밑줄 등)을 없앰*/
+  color:#ffffff;
+  font-size:20px;    /*1em = 16px*/
+  font-style:bold;  /*style속성값(100~900) 400-normal / 700-bold*/
+  transform:scale(1);
+  opacity:1;
+  transition:all 0.5s;
+  display:block; /*링크들의 글씨가 있는 부분뿐만 아니라 전체 영역을 클릭해도 링크가 걸리게 설정*/
+}
+#topmenu .menulink:hover { /*id가 topemenu인 태그 안에 menulink 클래스를 가진 태그게 마우스가 over될떄의 스타일 설정*/
+  color:#ffcd34;
+  font-size:1em;
+  font-weight:bold;
+  /*background-color:#243e90;*/
+  /* transform:scale(1.5); */
+  /* padding:5px;     */
+  /*패딩여백 - 테두리와 내용 사이의 여백*/
+  opacity:1;
+}
+#topmenu .submenulink {
+  color:#fff;
+  background-color:#6d6d6d;
+  font-size:1em;
+  font-weight:bold;
+}
+#topmenu .submenulink:hover{
+  color:#000;
+  background-color:#6d6d6d;
+  font-size:16px;
+  font-weight:bolder;
+  padding:5px;
+}
+#topmenu.submenu {
+  position:absolute;
+  height:0px;
+  /* overflow: hidden; */
+}
+.topmenu:hover .submenu{ /*상위 메뉴에 마우스를 over한 경우 그 안의 하위 메뉴 스타일 설정*/
+  hegiht:93px;  /*높이를 93px로 설정*/
+}
+
+/*Drop Down 메뉴 설정*/
+header ul ul {
+  display: none;
+}
+header ul li:hover > ul{
+  display:block;
+}
+
+
+/*유저 게임 정보*/
+nav { position:relative;
+margin-left: 25%;
+text-align:left;
+top: 100px;
+height:50px; weight:100%;
+background:#6d6d6d;
+color: #fff;
+}
+
+
+/*옆쪽 주 메뉴*/
+#l_menu { position:fixed;
+	 top:50%; left:0px;
+	 margin-top:-100px;
+	 z-index:13;}
+#l_menu a { display:block;
+	width:200px; height:60px;
+	font-family:Orbitron;
+	font-size:18px;
+	color:#fff;
+	text-align:right;
+	overflow:hidden;
+	box-sizing:border-box;
+	border-top:1px solid #111;
+	opacity:1;
+	transition:all 0.5s;}
+#l_menu li:hover a { font-size:24px;  opacity:1; font-weight:bold; color:#fff}
+#l_menu li.on a { font-size:24px; opacity:1; color:#fff; font-weight:bold;}
+
+/*sns버튼*/
+#sns { position:fixed; top:50px; right:50px;}
+#sns li { float:left; margin-left:20px;}
+#sns li i { font-size:23px; color:#999;}
+
+
+/*각각 article에 값 주기*/
+/*머리글씨 play game*/
+article:nth-child(1) { position:fixed;
+	top:30px; left:50px; width:400px;}
+article:nth-child(1) p { font-size:50px; color:#666;}
+article:nth-child(1) p strong { color:#999;}
+article:nth-child(1) em { font-size:14px; font-style:normal; color:#666;}
+/*목업부분이라 아래에 코드있음*/
+article:nth-child(2) {}
+/*나중에 이미지 크기랑 맞춰서 값 주기 >> 여기에 ajax 값으로 바뀌는 화면 넣을 수 있나?*/
+article:nth-child(3) {
+	position: fixed;
+	top: 160px;	left:420px;
+  width:860px; height:540px;
+}
+
+#main_context{
+	position:absolute;
+	top:160px; left:420px;
+	width:860px; height:540px;
+	background-image:url(../game_img/SonyTV.png);
+}
+
+/*목업*/
+figure {
+	position:absolute;
+	top:160px; left:420px;
+	width:860px; height:540px;
+	background-image:url(../game_img/SonyTV.png);
+ }
